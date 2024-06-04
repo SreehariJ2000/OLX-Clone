@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import Header from '../Components/Header/Header';
 import Banner from '../Components/Banner/Banner';
@@ -6,12 +6,13 @@ import Banner from '../Components/Banner/Banner';
 import Posts from '../Components/Posts/Posts';
 import Footer from '../Components/Footer/Footer';
 
-function Home(props) {
+function Home() {
+  const [searchQuery, setSearchQuery] = useState('');
   return (
     <div className="homeParentDiv">
-      <Header />
+      <Header onSearch={setSearchQuery} /> {/* Pass the function to update search query */}
       <Banner />
-      <Posts />
+      <Posts searchQuery={searchQuery} /> {/* Pass the search query to Posts */}
       <Footer />
     </div>
   );

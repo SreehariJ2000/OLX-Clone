@@ -3,9 +3,9 @@ import Heart from '../../assets/Heart';
 import './Post.css';
 import { FirebaseContext } from '../../Store/FirebaseContext';
 
-function Posts() {
+function Posts({ searchQuery }) { // Receive searchQuery as a prop
   const { firebase } = useContext(FirebaseContext);
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     firebase.firestore().collection('prod').get().then((snap) => {
@@ -13,9 +13,16 @@ function Posts() {
         ...prod.data(),
         id: prod.id
       }));
-      setProduct(allPost);
+      setProducts(allPost);
     });
   }, [firebase]);
+
+  // Filter products based on search query
+  const filteredProducts = products.filter((prod) =>
+    prod.name.toLowerCase().includes(searchQuery.toLowerCase())
+    
+  );
+
 
   return (
     <div className="postParentDiv">
@@ -25,7 +32,7 @@ function Posts() {
           <span>View more</span>
         </div>
         <div className="cards">
-          {product.map((prod) => (
+          {filteredProducts.map((prod) => (
             <div className="card" key={prod.id}>
               <div className="favorite">
                 <Heart />
